@@ -38,11 +38,10 @@ public class UserControllerTest {
     public void testGetUserById_Success() throws Exception {
         when(userRepo.getUserById(1L)).thenReturn(Optional.of(testUser));
 
-        mockMvc.perform(get("/api/users/")
-                        .param("userId", "1"))
+        mockMvc.perform(get("/user/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("Test User"));
+                .andExpect(jsonPath("$.name").value("Leanne Graham"));
 
         verify(userRepo, times(1)).getUserById(1L);
     }
@@ -51,12 +50,11 @@ public class UserControllerTest {
     public void testGetUserById_NotFound() throws Exception {
         when(userRepo.getUserById(2L)).thenReturn(Optional.empty());
 
-        mockMvc.perform(get("/api/users/")
-                        .param("userId", "2"))
+        mockMvc.perform(get("/user/3"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("User not found with id: 2"));
+                .andExpect(content().string("User not found with id: 3"));
 
-        verify(userRepo, times(1)).getUserById(2L);
+        verify(userRepo, times(1)).getUserById(3L);
     }
 
 }
