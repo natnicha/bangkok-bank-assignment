@@ -42,4 +42,13 @@ public class UserRepository {
             return user;
         }
     }
+
+    public boolean deleteUser(Long id) {
+        Optional<User> userOpt = getUserById(id);
+        if (userOpt.isPresent()) {
+            users.remove(userOpt.get());
+            return true;
+        }
+        return false;
+    }
 }

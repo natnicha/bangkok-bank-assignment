@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,26 +62,35 @@ public class UserService {
     }
 
     @PutMapping("/{userId}")
-public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
-    Optional<User> existingUser = userRepo.getUserById(userId);
+    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
+        Optional<User> existingUser = userRepo.getUserById(userId);
 
-    if (existingUser.isPresent()) {
-        User user = existingUser.get();
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
 
-        user.setName(updatedUser.getName());
-        user.setUsername(updatedUser.getUsername());
-        user.setEmail(updatedUser.getEmail());
-        user.setPhone(updatedUser.getPhone());
-        user.setWebsite(updatedUser.getWebsite());
+            user.setName(updatedUser.getName());
+            user.setUsername(updatedUser.getUsername());
+            user.setEmail(updatedUser.getEmail());
+            user.setPhone(updatedUser.getPhone());
+            user.setWebsite(updatedUser.getWebsite());
 
-        userRepo.save(user);
+            userRepo.save(user);
 
-        return ResponseEntity.ok(user);
-    } else {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("User not found with id: " + userId);
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("User not found with id: " + userId);
+        }
     }
-}
 
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        boolean deleted = userRepo.deleteUser(userId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
