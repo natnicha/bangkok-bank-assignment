@@ -10,7 +10,6 @@ public class UserRepository {
     private List<User> users = new ArrayList<>();
 
     public UserRepository() {
-        // Initialize with provided user list
         users.addAll(UserDataInitializer.getUsers());
     }
     
