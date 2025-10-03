@@ -14,6 +14,7 @@ public class User {
     private String website;
 
     public User(Long id, String name, String username, String email, String phone, String website) {
+        super();
         this.id = id;
         this.name = name;
         this.username = username;
