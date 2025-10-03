@@ -1,5 +1,6 @@
 package com.bank.api.model;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,8 +8,14 @@ import lombok.Setter;
 @Setter
 public class User {
     private Long id;
+    
+    @NotBlank(message = "Name is mandatory")
     private String name;
+    
+    @NotBlank(message = "Username is mandatory")
     private String username;
+    
+    @NotBlank(message = "Email is mandatory")
     private String email;
     private String phone;
     private String website;

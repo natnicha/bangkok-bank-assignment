@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bank.api.model.User;
 import com.bank.api.repository.UserRepository;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.validation.Valid;
 
 
 @RestController
@@ -36,7 +37,7 @@ public class UserService {
     }
 
     @PostMapping("")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         userRepo.addUser(user);
         return ResponseEntity.created(URI.create("/user" + user.getId()))
                 .body(user); 
@@ -62,7 +63,7 @@ public class UserService {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
+    public ResponseEntity<?> updateUser(@PathVariable Long userId, @Valid @RequestBody User updatedUser) {
         Optional<User> existingUser = userRepo.getUserById(userId);
 
         if (existingUser.isPresent()) {

@@ -12,7 +12,6 @@ public class UserDataInitializer {
         return Arrays.asList(
             createUser1(),
             createUser2()
-            // createUser3()
         );
     }
 
