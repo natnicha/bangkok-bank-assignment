@@ -25,4 +25,21 @@ public class UserRepository {
     public void addUser(User user) {
         users.add(user);
     }
+
+    public User save(User user) {
+        Optional<User> existing = getUserById(user.getId());
+
+        if (existing.isPresent()) {
+            User u = existing.get();
+            u.setName(user.getName());
+            u.setUsername(user.getUsername());
+            u.setEmail(user.getEmail());
+            u.setPhone(user.getPhone());
+            u.setWebsite(user.getWebsite());
+            return u;
+        } else {
+            users.add(user);
+            return user;
+        }
+    }
 }

@@ -1,15 +1,15 @@
 package com.bank.api.service;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,15 +41,15 @@ public class UserService {
                 .body(user); 
     }
 
-    @GetMapping("/")
-    public ResponseEntity<?> getMethodName(@RequestParam String userId) {
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getMethodName(@PathVariable String userId) {
         try {
             long id = Long.parseLong(userId);
             System.out.println(id);
             Optional<User> user = userRepo.getUserById(id);
 
             if (user.isPresent()) {
-                return ResponseEntity.ok(user.get()); // return 200 + user JSON
+                return ResponseEntity.ok(user.get());
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("User not found with id: " + id);
@@ -59,5 +59,28 @@ public class UserService {
             return ResponseEntity.badRequest().body("Invalid userId: " + userId);
         }
     }
+
+    @PutMapping("/{id}")
+public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+    Optional<User> existingUser = userRepo.getUserById(id);
+
+    if (existingUser.isPresent()) {
+        User user = existingUser.get();
+
+        user.setName(updatedUser.getName());
+        user.setUsername(updatedUser.getUsername());
+        user.setEmail(updatedUser.getEmail());
+        user.setPhone(updatedUser.getPhone());
+        user.setWebsite(updatedUser.getWebsite());
+
+        userRepo.save(user);
+
+        return ResponseEntity.ok(user);
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("User not found with id: " + id);
+    }
+}
+
 
 }
