@@ -18,7 +18,7 @@ public class UserRepository {
         return users;
     }
 
-    public Optional<User> getUserById(int id) {
+    public Optional<User> getUserById(Long id) {
         return users.stream().filter(u -> u.getId() == id).findFirst();
     }
 
