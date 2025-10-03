@@ -60,9 +60,9 @@ public class UserService {
         }
     }
 
-    @PutMapping("/{id}")
-public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-    Optional<User> existingUser = userRepo.getUserById(id);
+    @PutMapping("/{userId}")
+public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
+    Optional<User> existingUser = userRepo.getUserById(userId);
 
     if (existingUser.isPresent()) {
         User user = existingUser.get();
@@ -78,7 +78,7 @@ public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User upd
         return ResponseEntity.ok(user);
     } else {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("User not found with id: " + id);
+                .body("User not found with id: " + userId);
     }
 }
 
