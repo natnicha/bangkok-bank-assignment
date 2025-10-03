@@ -1,9 +1,11 @@
 package com.bank.api.service;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +16,7 @@ import com.bank.api.model.User;
 import com.bank.api.repository.UserRepository;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class UserService {
     
 	UserRepository userRepo;
@@ -28,10 +30,10 @@ public class UserService {
         return userRepo.getAllUsers();
     }
 
-    @PostMapping("/")
-    public User createUser(@RequestBody User user) {
-        // User savedUser = userRepo.save(user);
-        // return savedUser;
-        return user;
+    @PostMapping("")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        userRepo.addUser(user);
+        return ResponseEntity.created(URI.create("/user" + user.getId()))
+                .body(user); 
     }
 }
